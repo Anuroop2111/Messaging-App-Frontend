@@ -1,0 +1,14 @@
+.message-page {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  border: 1px solid black;
+  width: 66%; /* Changed width to 66.5% */
+}
+
+.right-column {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}

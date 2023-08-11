@@ -1,0 +1,15 @@
+.chat-page {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  border: 1px solid black;
+  width: 33%;
+}
+
+.left-column {
+  flex: 1;
+  padding: 20px;
+  border-right: 1px solid black;
+  overflow-y: auto;
+}
