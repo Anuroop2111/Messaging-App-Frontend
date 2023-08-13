@@ -3,7 +3,6 @@
   padding: 0;
   margin: 0;
   height: 100vh;
-  border: 1px solid black;
   width: 66%; /* Changed width to 66.5% */
 }
 
@@ -11,4 +10,27 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+.flex{
+  display: flex;
+}
+
+.justify {
+  justify-content: space-between;
+}
+
+.w-100{
+  width:100%;
+}
+.flex-col{
+  flex-direction: column;
+}
+
+.left-align {
+  margin-right: auto;
+}
+
+.right-align {
+  margin-left: auto;
 }
