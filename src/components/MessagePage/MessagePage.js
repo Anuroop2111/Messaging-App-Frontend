@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './MessagePage.css';
+import { ChatIdContext } from "../../ChatIdContext";
 
 
 const MsgPage = () =>{
     const [messages,setMessages] = useState([]);
+    const {selectedChatId} = useContext(ChatIdContext)
+
     async function fetchMessageNames() {
       try {
-        const response = await fetch(`http://localhost:8080/api/getMessage/w1x2y3z4`);
+        console.log("Fetch Message Called")
+        const response = await fetch(`http://localhost:8080/api/getMessage/${selectedChatId}`);
         let data = await response.json();
         data.sort()
         setMessages(data);
@@ -15,11 +19,11 @@ const MsgPage = () =>{
       }
     }
     useEffect(()=>{
-    (async ()=>{
-      await fetchMessageNames();
-      })()
+    if (selectedChatId){
+      fetchMessageNames(selectedChatId);
+    }
   
-    },[])
+    },[selectedChatId])
     return(
         <div className="message-page">
             <div className="right-column">
