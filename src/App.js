@@ -25,7 +25,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<SignIn onSignIn={handleSignIn}/>} />
         <Route path="/combined" element={<CombinedPage/>} />
-        <Route path="/*" element={<Navigate to="/combined" />} />
+        <Route path="/*" element={<Navigate to="/login" />} />
       </Routes>
       </ChatIdProvider>
     </Router>

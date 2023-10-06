@@ -72,7 +72,7 @@ const CombinedPage = () =>{
             setUsername(username);
             console.log("Username before Calling ChatPage: ", username);
             // Render ChatPage after getting the username
-            return <ChatPage username={username} />;
+            // return <ChatPage username={username} />;
         };
 
         // Call the async function and render the ChatPage
