@@ -8,6 +8,7 @@ import { ChatIdProvider } from './ChatIdContext';
 import SignIn from "./components/SignIn/SignIn";
 import Register from "./components/Register/register"; 
 import CombinedPage from './components/CombinedPage/CombinedPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [isLoggedIn,setIsLoggedIn] = React.useState(false);
@@ -24,8 +25,7 @@ function App() {
       <ChatIdProvider>
       <Routes>
         <Route path="/login" element={<SignIn onSignIn={handleSignIn}/>} />
-        <Route path="/combined" element={<CombinedPage/>} />
-        <Route path="/*" element={<Navigate to="/login" />} />
+        <Route path="/home" element={<ProtectedRoute><CombinedPage/></ProtectedRoute>} />
       </Routes>
       </ChatIdProvider>
     </Router>
