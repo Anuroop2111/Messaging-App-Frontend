@@ -4,16 +4,18 @@ import { ChatIdContext } from "../../ChatIdContext";
 import axios from "axios";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 var stompClient = null;
 var regFlag = true;
 
-const MsgPage = ({ chatList, currentChatId }) => {
+const MsgPage = ({ chats, currentChatId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userid, setUserid] = useState("");
   // const [flag,setFlag] = useState(true)
-
+  const chatList = chats.map(({ chatId }) => chatId);
   // Register user
   const connect = () => {
     let Sock = new SockJS(`http://localhost:8080/ws`);
@@ -46,6 +48,11 @@ const MsgPage = ({ chatList, currentChatId }) => {
       fetchMessageNames();
     } else {
       console.log("Got a reminder from chat = ", payload.body);
+      toast(
+        `Recieved a message from ${
+          chats.find(({ chatId }) => chatId === payload.body).friendName
+        }`
+      );
     }
   };
 
@@ -139,7 +146,7 @@ const MsgPage = ({ chatList, currentChatId }) => {
     if (currentChatId) {
       fetchMessageNames();
     }
-  }, [cookieName, currentChatId, chatList, userid]);
+  }, []);
 
   useEffect(() => {
     if (regFlag) {
@@ -182,6 +189,7 @@ const MsgPage = ({ chatList, currentChatId }) => {
           />
           <button onClick={handleSendMessage}>Send</button>
         </div>
+        <ToastContainer />
       </div>
     </div>
   );

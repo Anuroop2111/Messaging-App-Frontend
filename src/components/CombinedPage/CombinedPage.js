@@ -105,10 +105,7 @@ const CombinedPage = () => {
       <ChatIdProvider>
         {<ChatPage chats={chats} />}{" "}
         {/* Render ChatPage if username is available */}
-        <MsgPage
-          currentChatId={chatId}
-          chatList={chats?.map(({ chatId }) => chatId)}
-        />
+        <MsgPage currentChatId={chatId} chats={chats} />
       </ChatIdProvider>
     </div>
   );
