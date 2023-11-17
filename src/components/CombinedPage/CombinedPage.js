@@ -6,7 +6,8 @@ import MsgPage from "../MessagePage/MessagePage";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ChatIdProvider } from "../../ChatIdContext";
+import { toast } from "react-toastify";
+import { deleteCookie } from "../../utils/cookieUtils";
 
 const CombinedPage = () => {
   const location = useLocation();
@@ -18,10 +19,10 @@ const CombinedPage = () => {
 
   // From the broser cookie (jwt-token), get Jwt Token
   const getJwtTokenFromCookie = () => {
-    const cookieValue = document.cookie
-      .split(";")
-      .find((row) => row.startsWith("jwt-token="))
-      .split("=")[1];
+    const cookieValue = document?.cookie
+      ?.split(";")
+      ?.find((row) => row.startsWith("jwt-token="))
+      ?.split("=")[1];
 
     return cookieValue;
   };
@@ -32,13 +33,17 @@ const CombinedPage = () => {
         return false;
       }
       const username = localStorage.getItem("username");
-      const response = await fetch(
-        `http://localhost:8080/api/getChatNames/${username}`
+      const response = await axios.get(
+        `http://localhost:8080/api/getChatNames/${username}`,
+        { withCredentials: true }
       );
-      const data = await response.json();
+      const data = response.data;
       console.log("data = ", data);
       setChats(data);
     } catch (error) {
+      deleteCookie("jwt-token");
+      toast.error(error.response.data);
+      navigate("/login");
       console.error("Error fetching data:", error);
     }
   }
@@ -102,11 +107,9 @@ const CombinedPage = () => {
 
   return (
     <div className="CombinedPage">
-      <ChatIdProvider>
-        {<ChatPage chats={chats} />}{" "}
-        {/* Render ChatPage if username is available */}
-        <MsgPage currentChatId={chatId} chats={chats} />
-      </ChatIdProvider>
+      {<ChatPage chats={chats} />}{" "}
+      {/* Render ChatPage if username is available */}
+      <MsgPage currentChatId={chatId} chats={chats} />
     </div>
   );
 };

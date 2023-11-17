@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ChatPage.css";
-import { ChatIdContext } from "../../ChatIdContext";
 
 const ChatPage = ({ chats }) => {
-  const { setSelectedChatId, setRegisterFlag } = useContext(ChatIdContext);
-
   return (
     <div className="chat-page">
       <div className="left-column">

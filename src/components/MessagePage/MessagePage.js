@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./MessagePage.css";
-import { ChatIdContext } from "../../ChatIdContext";
 import axios from "axios";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { ToastContainer, toast } from "react-toastify";
+import { deleteCookie, getCookie } from "../../utils/cookieUtils";
 import "react-toastify/dist/ReactToastify.css";
+import { redirect, useNavigate } from "react-router-dom";
 
 var stompClient = null;
 var regFlag = true;
@@ -61,18 +62,22 @@ const MsgPage = ({ chats, currentChatId }) => {
   };
 
   const cookieName = "jwt-token"; // The Cookie Name
-
+  const navigate = useNavigate();
   async function fetchMessageNames() {
     try {
       console.log("Fetch Message Called");
-      const response = await fetch(
-        `http://localhost:8080/api/getMessage/${currentChatId}`
+      const response = await axios.get(
+        `http://localhost:8080/api/getMessage/${currentChatId}`,
+        { withCredentials: true }
       );
-      let data = await response.json();
+      let data = response.data;
       data.sort();
       setMessages(data);
     } catch (error) {
+      deleteCookie("jwt-token");
+      toast.error(error.response.data);
       console.error("Error fetching data:", error);
+      navigate("/home");
     }
   }
 
@@ -116,15 +121,6 @@ const MsgPage = ({ chats, currentChatId }) => {
 
   useEffect(() => {
     // Function to extract a cookie by its name
-    const getCookie = (name) => {
-      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-      for (const cookie of cookies) {
-        if (cookie.startsWith(`${name}=`)) {
-          return cookie.substring(name.length + 1);
-        }
-      }
-      return null;
-    };
 
     const jwtToken = getCookie(cookieName);
 
